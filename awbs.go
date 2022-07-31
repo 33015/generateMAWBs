@@ -2,29 +2,27 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"math/rand"
 	"os"
-	"strconv"
 	"time"
 )
 
 func main() {
 	awb := generate_random_seed(0)
+	var amount_of_awbs int
+	flag.IntVar(&amount_of_awbs, "a", 10, "Number of AWBs to generate")
+	var awb_prefix string
+	flag.StringVar(&awb_prefix, "p", "", "AWB prefix of the ABWs that will be generated, must be a string")
+	flag.Parse()
 
-	if len(os.Args) == 3 {
-		number_of_awbs, err := strconv.Atoi(os.Args[1])
-		if err != nil {
-			fmt.Println("First argument needs to be an Number")
-		}
-		if number_of_awbs < 1 {
-			fmt.Println("Number of AWBs must be one or more")
-		}
-		print_awbs(number_of_awbs, os.Args[2], awb)
-	} else {
-		awb_prefix := prefixInput()
-		print_awbs(10, awb_prefix, awb)
+	if len(awb_prefix) != 3 {
+		fmt.Println("AWB must be a string with three characters, for example \"020\"")
+		awb_prefix = prefixInput()
 	}
+	print_awbs(amount_of_awbs, awb_prefix, awb)
+
 }
 
 func print_awbs(number_of_awbs int, awb_prefix string, awb int) {
